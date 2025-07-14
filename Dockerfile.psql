@@ -1,0 +1,9 @@
+# ============================
+# Dockerfile.postgres (PostgreSQL)
+# ============================
+FROM postgres:15
+
+# Copy custom init script if needed
+# COPY init.sql /docker-entrypoint-initdb.d/
+
+# Use environment variables from docker-compose

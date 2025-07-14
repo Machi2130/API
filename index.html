@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KPA Forms - Wheel Specifications</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1em;
+        }
+
+        .tab-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            color: white;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .tab-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .tab-button.active {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            box-shadow: 0 8px 25px rgba(238, 90, 82, 0.4);
+        }
+
+        .tab-content {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #555;
+            font-size: 0.95em;
+        }
+
+        .form-group input {
+            padding: 12px 16px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-header {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .filter-container {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 1px solid #e9ecef;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .filter-btn {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 20px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+        }
+
+        .filter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(40, 167, 69, 0.3);
+        }
+
+        .clear-btn {
+            background: linear-gradient(135deg, #6c757d, #5a6268);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 20px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .clear-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(108, 117, 125, 0.3);
+        }
+
+        .results-container {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .results-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .results-content {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .result-item {
+            border-bottom: 1px solid #f0f0f0;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .result-item:hover {
+            background: #f8f9fa;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .result-form-number {
+            font-weight: 700;
+            color: #667eea;
+            font-size: 1.2em;
+        }
+
+        .result-status {
+            background: #28a745;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .result-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .result-info-item {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .result-info-item strong {
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .result-fields {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .result-fields h4 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .fields-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 12px;
+        }
+
+        .field-item {
+            background: white;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+            font-size: 0.9em;
+        }
+
+        .field-item strong {
+            color: #667eea;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #667eea;
+            font-size: 1.1em;
+        }
+
+        .loading:after {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #667eea;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .search-prompt {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+        }
+
+        .search-prompt h3 {
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .tab-container {
+                flex-direction: column;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-header {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .result-info {
+                grid-template-columns: 1fr;
+            }
+
+            .fields-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>KPA Forms</h1>
+            <p>Wheel Specification Management System</p>
+        </div>
+
+        <div class="tab-container">
+            <button class="tab-button active" onclick="switchTab('submit')">Submit Form</button>
+            <button class="tab-button" onclick="switchTab('view')">View Submissions</button>
+        </div>
+
+        <!-- Submit Form Tab -->
+        <div id="submit-tab" class="tab-content active">
+            <div id="submit-message"></div>
+            <form id="wheel-form">
+                <div class="form-header">
+                    <div class="form-group">
+                        <label for="formNumber">Form Number *</label>
+                        <input type="text" id="formNumber" name="formNumber" required 
+                               placeholder="e.g., WHEEL-2025-001">
+                    </div>
+                    <div class="form-group">
+                        <label for="submittedBy">Submitted By *</label>
+                        <input type="text" id="submittedBy" name="submittedBy" required 
+                               placeholder="e.g., user_id_123">
+                    </div>
+                    <div class="form-group">
+                        <label for="submittedDate">Submitted Date *</label>
+                        <input type="date" id="submittedDate" name="submittedDate" required>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="treadDiameterNew">Tread Diameter New</label>
+                        <input type="text" id="treadDiameterNew" name="treadDiameterNew" 
+                               placeholder="e.g., 915 (900-1000)">
+                    </div>
+                    <div class="form-group">
+                        <label for="lastShopIssueSize">Last Shop Issue Size</label>
+                        <input type="text" id="lastShopIssueSize" name="lastShopIssueSize" 
+                               placeholder="e.g., 837 (800-900)">
+                    </div>
+                    <div class="form-group">
+                        <label for="condemningDia">Condemning Diameter</label>
+                        <input type="text" id="condemningDia" name="condemningDia" 
+                               placeholder="e.g., 825 (800-900)">
+                    </div>
+                    <div class="form-group">
+                        <label for="wheelGauge">Wheel Gauge</label>
+                        <input type="text" id="wheelGauge" name="wheelGauge" 
+                               placeholder="e.g., 1600 (+2,-1)">
+                    </div>
+                    <div class="form-group">
+                        <label for="variationSameAxle">Variation Same Axle</label>
+                        <input type="text" id="variationSameAxle" name="variationSameAxle" 
+                               placeholder="e.g., 0.5">
+                    </div>
+                    <div class="form-group">
+                        <label for="variationSameBogie">Variation Same Bogie</label>
+                        <input type="text" id="variationSameBogie" name="variationSameBogie" 
+                               placeholder="e.g., 5">
+                    </div>
+                    <div class="form-group">
+                        <label for="variationSameCoach">Variation Same Coach</label>
+                        <input type="text" id="variationSameCoach" name="variationSameCoach" 
+                               placeholder="e.g., 13">
+                    </div>
+                    <div class="form-group">
+                        <label for="wheelProfile">Wheel Profile</label>
+                        <input type="text" id="wheelProfile" name="wheelProfile" 
+                               placeholder="e.g., 29.4 Flange Thickness">
+                    </div>
+                    <div class="form-group">
+                        <label for="intermediateWWP">Intermediate WWP</label>
+                        <input type="text" id="intermediateWWP" name="intermediateWWP" 
+                               placeholder="e.g., 20 TO 28">
+                    </div>
+                    <div class="form-group">
+                        <label for="bearingSeatDiameter">Bearing Seat Diameter</label>
+                        <input type="text" id="bearingSeatDiameter" name="bearingSeatDiameter" 
+                               placeholder="e.g., 130.043 TO 130.068">
+                    </div>
+                    <div class="form-group">
+                        <label for="rollerBearingOuterDia">Roller Bearing Outer Diameter</label>
+                        <input type="text" id="rollerBearingOuterDia" name="rollerBearingOuterDia" 
+                               placeholder="e.g., 280 (+0.0/-0.035)">
+                    </div>
+                    <div class="form-group">
+                        <label for="rollerBearingBoreDia">Roller Bearing Bore Diameter</label>
+                        <input type="text" id="rollerBearingBoreDia" name="rollerBearingBoreDia" 
+                               placeholder="e.g., 130 (+0.0/-0.025)">
+                    </div>
+                    <div class="form-group">
+                        <label for="rollerBearingWidth">Roller Bearing Width</label>
+                        <input type="text" id="rollerBearingWidth" name="rollerBearingWidth" 
+                               placeholder="e.g., 93 (+0/-0.250)">
+                    </div>
+                    <div class="form-group">
+                        <label for="axleBoxHousingBoreDia">Axle Box Housing Bore Diameter</label>
+                        <input type="text" id="axleBoxHousingBoreDia" name="axleBoxHousingBoreDia" 
+                               placeholder="e.g., 280 (+0.030/+0.052)">
+                    </div>
+                    <div class="form-group">
+                        <label for="wheelDiscWidth">Wheel Disc Width</label>
+                        <input type="text" id="wheelDiscWidth" name="wheelDiscWidth" 
+                               placeholder="e.g., 127 (+4/-0)">
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submit-btn">Submit Form</button>
+            </form>
+        </div>
+
+        <!-- View Submissions Tab -->
+        <div id="view-tab" class="tab-content">
+            <div class="filter-container">
+                <div class="filter-grid">
+                    <div class="form-group">
+                        <label for="filterFormNumber">Form Number</label>
+                        <input type="text" id="filterFormNumber" placeholder="e.g., WHEEL-2025-001">
+                    </div>
+                    <div class="form-group">
+                        <label for="filterSubmittedBy">Submitted By</label>
+                        <input type="text" id="filterSubmittedBy" placeholder="e.g., user_id_123">
+                    </div>
+                    <div class="form-group">
+                        <label for="filterSubmittedDate">Submitted Date</label>
+                        <input type="date" id="filterSubmittedDate">
+                    </div>
+                </div>
+                <div>
+                    <button class="filter-btn" onclick="filterSubmissions()">Apply Filters</button>
+                    <button class="clear-btn" onclick="clearFilters()">Clear Filters</button>
+                </div>
+            </div>
+
+            <div class="results-container">
+                <div class="results-header">
+                    <span id="results-count">Search Results</span>
+                </div>
+                <div id="results-content" class="results-content">
+                    <div class="search-prompt">
+                        <h3>Search for Submissions</h3>
+                        <p>Use the filters above to search for wheel specification submissions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const API_BASE_URL = 'http://localhost:8000'; // This should match your app.py host/port
+
+        // State
+        let allSubmissions = [];
+        let filteredSubmissions = [];
+        let hasSearched = false;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set default date to today
+            document.getElementById('submittedDate').value = new Date().toISOString().split('T')[0];
+        });
+
+        // Tab switching
+        function switchTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`button[onclick="switchTab('${tabName}')"]`).classList.add('active');
+            
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+            
+            // Reset view tab when switching to it
+            if (tabName === 'view' && !hasSearched) {
+                resetViewTab();
+            }
+        }
+
+        // Reset view tab to initial state
+        function resetViewTab() {
+            const resultsContent = document.getElementById('results-content');
+            const resultsCount = document.getElementById('results-count');
+            
+            resultsContent.innerHTML = `
+                <div class="search-prompt">
+                    <h3>Search for Submissions</h3>
+                    <p>Use the filters above to search for wheel specification submissions.</p>
+                </div>
+            `;
+            resultsCount.textContent = 'Search Results';
+            hasSearched = false;
+        }
+
+        // Form submission
+        document.getElementById('wheel-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submit-btn');
+            const messageDiv = document.getElementById('submit-message');
+            
+            // Disable submit button
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+            
+            try {
+                // Collect form data
+                const formData = new FormData(this);
+                const fields = {};
+                
+                // Collect field values
+                const fieldNames = [
+                    'treadDiameterNew', 'lastShopIssueSize', 'condemningDia', 'wheelGauge',
+                    'variationSameAxle', 'variationSameBogie', 'variationSameCoach',
+                    'wheelProfile', 'intermediateWWP', 'bearingSeatDiameter',
+                    'rollerBearingOuterDia', 'rollerBearingBoreDia', 'rollerBearingWidth',
+                    'axleBoxHousingBoreDia', 'wheelDiscWidth'
+                ];
+                
+                fieldNames.forEach(fieldName => {
+                    fields[fieldName] = formData.get(fieldName) || '';
+                });
+                
+                const requestData = {
+                    formNumber: formData.get('formNumber'),
+                    submittedBy: formData.get('submittedBy'),
+                    submittedDate: formData.get('submittedDate'),
+                    fields: fields
+                };
+                
+                // Submit to API
+                const response = await fetch(`${API_BASE_URL}/api/forms/wheel-specifications`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestData)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok && result.success) {
+                    showMessage('success', result.message);
+                    this.reset();
+                    document.getElementById('submittedDate').value = new Date().toISOString().split('T')[0];
+                } else {
+                    showMessage('error', result.detail || result.message || 'An error occurred');
+                }
+                
+            } catch (error) {
+                showMessage('error', 'Network error: ' + error.message);
+            } finally {
+                // Re-enable submit button
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Form';
+            }
+        });
+
+        // Filter submissions
+        async function filterSubmissions() {
+            const formNumber = document.getElementById('filterFormNumber').value;
+            const submittedBy = document.getElementById('filterSubmittedBy').value;
+            const submittedDate = document.getElementById('filterSubmittedDate').value;
+            
+            // Check if at least one filter is provided
+            if (!formNumber && !submittedBy && !submittedDate) {
+                const resultsContent = document.getElementById('results-content');
+                resultsContent.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No Filter Criteria</h3>
+                        <p>Please provide at least one filter criteria to search for submissions.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Build query parameters
+            const params = new URLSearchParams();
+            if (formNumber) params.append('form_number', formNumber);
+            if (submittedBy) params.append('submitted_by', submittedBy);
+            if (submittedDate) params.append('submitted_date', submittedDate);
+            
+            const resultsContent = document.getElementById('results-content');
+            resultsContent.innerHTML = '<div class="loading">Searching submissions...</div>';
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/forms/wheel-specifications?${params}`);
+                const result = await response.json();
+                
+                if (response.ok && result.success) {
+                    filteredSubmissions = result.data;
+                    hasSearched = true;
+                    displaySubmissions();
+                } else {
+                    resultsContent.innerHTML = `<div class="empty-state"><h3>Error</h3><p>${result.message || 'Failed to filter submissions'}</p></div>`;
+                }
+            } catch (error) {
+                resultsContent.innerHTML = `<div class="empty-state"><h3>Network Error</h3><p>Could not connect to the API: ${error.message}</p></div>`;
+            }
+        }
+
+        // Clear filters
+        function clearFilters() {
+            document.getElementById('filterFormNumber').value = '';
+            document.getElementById('filterSubmittedBy').value = '';
+            document.getElementById('filterSubmittedDate').value = '';
+            
+            resetViewTab();
+        }
+
+        // Display submissions
+        function displaySubmissions() {
+            const resultsContent = document.getElementById('results-content');
+            const resultsCount = document.getElementById('results-count');
+            
+            if (filteredSubmissions.length === 0) {
+                resultsContent.innerHTML = '<div class="empty-state"><h3>No Submissions Found</h3><p>No wheel specifications match your search criteria.</p></div>';
+                resultsCount.textContent = 'No Results';
+                return;
+            }
+            
+            resultsCount.textContent = `${filteredSubmissions.length} Result${filteredSubmissions.length !== 1 ? 's' : ''}`;
+            
+            const html = filteredSubmissions.map(submission => {
+                // Handle JSONB fields - parse if string, use as object if already parsed
+                let fieldsData = submission.fields;
+                if (typeof fieldsData === 'string') {
+                    try {
+                        fieldsData = JSON.parse(fieldsData);
+                    } catch (e) {
+                        console.error('Error parsing fields JSON:', e);
+                        fieldsData = {};
+                    }
+                }
+                
+                // Ensure fieldsData is an object
+                if (typeof fieldsData !== 'object' || fieldsData === null) {
+                    fieldsData = {};
+                }
+                
+                const fieldsHtml = Object.entries(fieldsData)
+                    .filter(([key, value]) => value && value.toString().trim() !== '')
+                    .map(([key, value]) => `
+                        <div class="field-item">
+                            <strong>${formatFieldName(key)}:</strong>
+                            ${value}
+                        </div>
+                    `).join('');
+                
+                return `
+                    <div class="result-item">
+                        <div class="result-header">
+                            <span class="result-form-number">${submission.formNumber || 'N/A'}</span>
+                            <span class="result-status">Saved</span>
+                        </div>
+                        <div class="result-info">
+                            <div class="result-info-item">
+                                <strong>Submitted By:</strong>
+                                ${submission.submittedBy || 'N/A'}
+                            </div>
+                            <div class="result-info-item">
+                                <strong>Submitted Date:</strong>
+                                ${submission.submittedDate || 'N/A'}
+                            </div>
+                        </div>
+                        <div class="result-fields">
+                            <h4>Wheel Specifications:</h4>
+                            <div class="fields-grid">
+                                ${fieldsHtml || '<div class="field-item">No specification data available</div>'}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            resultsContent.innerHTML = html;
+        }
+
+        
+        // Format field names for display
+        function formatFieldName(fieldName) {
+            const fieldLabels = {
+                treadDiameterNew: 'Tread Diameter New',
+                lastShopIssueSize: 'Last Shop Issue Size',
+                condemningDia: 'Condemning Diameter',
+                wheelGauge: 'Wheel Gauge',
+                variationSameAxle: 'Variation Same Axle',
+                variationSameBogie: 'Variation Same Bogie',
+                variationSameCoach: 'Variation Same Coach',
+                wheelProfile: 'Wheel Profile',
+                intermediateWWP: 'Intermediate WWP',
+                bearingSeatDiameter: 'Bearing Seat Diameter',
+                rollerBearingOuterDia: 'Roller Bearing Outer Diameter',
+                rollerBearingBoreDia: 'Roller Bearing Bore Diameter',
+                rollerBearingWidth: 'Roller Bearing Width',
+                axleBoxHousingBoreDia: 'Axle Box Housing Bore Diameter',
+                wheelDiscWidth: 'Wheel Disc Width'
+            };
+            
+            return fieldLabels[fieldName] || fieldName;
+        }
+
+        // Show message
+        function showMessage(type, message) {
+            const messageDiv = document.getElementById('submit-message');
+            messageDiv.className = `message ${type}`;
+            messageDiv.textContent = message;
+            messageDiv.style.display = 'block';
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
